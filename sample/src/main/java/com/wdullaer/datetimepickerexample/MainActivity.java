@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.v13.app.FragmentPagerAdapter;
+
+import com.wdullaer.materialdatetimepicker.supportdate.SupportDatePickerDialog;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -17,7 +20,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.date_fragment);
+
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction();
+        //transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
+        transaction.replace(R.id.frame, new SupportDatePickerDialog());
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
+        transaction.commit();
+
+        /*setContentView(R.layout.activity_main);
 
         adapter = new PickerAdapter(getFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -26,7 +39,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        for(int i=0;i<adapter.getCount();i++) tabLayout.getTabAt(i).setText(adapter.getTitle(i));
+        for(int i=0;i<adapter.getCount();i++) tabLayout.getTabAt(i).setText(adapter.getTitle(i));*/
     }
 
     private class PickerAdapter extends FragmentPagerAdapter {
@@ -37,7 +50,7 @@ public class MainActivity extends AppCompatActivity
         public PickerAdapter(FragmentManager fm) {
             super(fm);
             timePickerFragment = new TimePickerFragment();
-            datePickerFragment = new DatePickerFragment();
+            //datePickerFragment = new DatePickerSupportFragment();
         }
 
         @Override

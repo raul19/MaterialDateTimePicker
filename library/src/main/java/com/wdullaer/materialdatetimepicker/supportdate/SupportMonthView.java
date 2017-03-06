@@ -1,27 +1,9 @@
-/*
- * Copyright (C) 2013 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package com.wdullaer.materialdatetimepicker.date;
+package com.wdullaer.materialdatetimepicker.supportdate;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Paint.Align;
-import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -40,8 +22,9 @@ import android.view.accessibility.AccessibilityNodeInfo;
 
 import com.wdullaer.materialdatetimepicker.R;
 import com.wdullaer.materialdatetimepicker.TypefaceHelper;
-import com.wdullaer.materialdatetimepicker.date.MonthAdapter.CalendarDay;
-import com.wdullaer.materialdatetimepicker.supportdate.SupportMonthView;
+import com.wdullaer.materialdatetimepicker.date.DatePickerController;
+import com.wdullaer.materialdatetimepicker.date.MonthAdapter;
+import com.wdullaer.materialdatetimepicker.date.MonthView;
 
 import java.security.InvalidParameterException;
 import java.text.SimpleDateFormat;
@@ -52,10 +35,10 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * A calendar-like view displaying a specified month and the appropriate selectable day numbers
- * within the specified month.
+ * Created by rmore on 06/03/2017.
  */
-public abstract class MonthView extends View {
+
+public abstract class SupportMonthView extends View {
     private static final String TAG = "MonthView";
 
     /**
@@ -122,7 +105,7 @@ public abstract class MonthView extends View {
     // used for scaling to the device density
     protected static float mScale = 0;
 
-    protected DatePickerController mController;
+    protected SupportDatePickerController mController;
 
     // affects the padding on the sides of this view
     protected int mEdgePadding = 0;
@@ -171,12 +154,12 @@ public abstract class MonthView extends View {
 
     private final Calendar mCalendar;
     protected final Calendar mDayLabelCalendar;
-    private final MonthViewTouchHelper mTouchHelper;
+    private final SupportMonthView.MonthViewTouchHelper mTouchHelper;
 
     protected int mNumRows = DEFAULT_NUM_ROWS;
 
     // Optional listener for handling day click actions
-    protected OnDayClickListener mOnDayClickListener;
+    protected SupportMonthView.OnDayClickListener mOnDayClickListener;
 
     // Whether to prevent setting the accessibility delegate
     private boolean mLockAccessibilityDelegate;
@@ -189,11 +172,11 @@ public abstract class MonthView extends View {
     protected int mDisabledDayTextColor;
     protected int mMonthTitleColor;
 
-    public MonthView(Context context) {
+    public SupportMonthView(Context context) {
         this(context, null, null);
     }
 
-    public MonthView(Context context, AttributeSet attr, DatePickerController controller) {
+    public SupportMonthView(Context context, AttributeSet attr, SupportDatePickerController controller) {
         super(context, attr);
         mController = controller;
         Resources res = context.getResources();
@@ -244,12 +227,12 @@ public abstract class MonthView extends View {
         initView();
     }
 
-    public void setDatePickerController(DatePickerController controller) {
+    public void setDatePickerController(SupportDatePickerController controller) {
         mController = controller;
     }
 
-    protected MonthViewTouchHelper getMonthViewTouchHelper() {
-        return new MonthViewTouchHelper(this);
+    protected SupportMonthView.MonthViewTouchHelper getMonthViewTouchHelper() {
+        return new SupportMonthView.MonthViewTouchHelper(this);
     }
 
     @Override
@@ -261,7 +244,7 @@ public abstract class MonthView extends View {
         }
     }
 
-    public void setOnDayClickListener(OnDayClickListener listener) {
+    public void setOnDayClickListener(SupportMonthView.OnDayClickListener listener) {
         mOnDayClickListener = listener;
     }
 
@@ -298,15 +281,15 @@ public abstract class MonthView extends View {
         mMonthTitlePaint.setTextSize(MONTH_LABEL_TEXT_SIZE);
         mMonthTitlePaint.setTypeface(Typeface.create(mMonthTitleTypeface, Typeface.BOLD));
         mMonthTitlePaint.setColor(mDayTextColor);
-        mMonthTitlePaint.setTextAlign(Align.CENTER);
-        mMonthTitlePaint.setStyle(Style.FILL);
+        mMonthTitlePaint.setTextAlign(Paint.Align.CENTER);
+        mMonthTitlePaint.setStyle(Paint.Style.FILL);
 
         mSelectedCirclePaint = new Paint();
         mSelectedCirclePaint.setFakeBoldText(true);
         mSelectedCirclePaint.setAntiAlias(true);
         mSelectedCirclePaint.setColor(mTodayNumberColor);
-        mSelectedCirclePaint.setTextAlign(Align.CENTER);
-        mSelectedCirclePaint.setStyle(Style.FILL);
+        mSelectedCirclePaint.setTextAlign(Paint.Align.CENTER);
+        mSelectedCirclePaint.setStyle(Paint.Style.FILL);
         mSelectedCirclePaint.setAlpha(SELECTED_CIRCLE_ALPHA);
 
         mMonthDayLabelPaint = new Paint();
@@ -314,15 +297,15 @@ public abstract class MonthView extends View {
         mMonthDayLabelPaint.setTextSize(MONTH_DAY_LABEL_TEXT_SIZE);
         mMonthDayLabelPaint.setColor(mMonthDayTextColor);
         mMonthDayLabelPaint.setTypeface(TypefaceHelper.get(getContext(),"Roboto-Medium"));
-        mMonthDayLabelPaint.setStyle(Style.FILL);
-        mMonthDayLabelPaint.setTextAlign(Align.CENTER);
+        mMonthDayLabelPaint.setStyle(Paint.Style.FILL);
+        mMonthDayLabelPaint.setTextAlign(Paint.Align.CENTER);
         mMonthDayLabelPaint.setFakeBoldText(true);
 
         mMonthNumPaint = new Paint();
         mMonthNumPaint.setAntiAlias(true);
         mMonthNumPaint.setTextSize(MINI_DAY_NUMBER_TEXT_SIZE);
-        mMonthNumPaint.setStyle(Style.FILL);
-        mMonthNumPaint.setTextAlign(Align.CENTER);
+        mMonthNumPaint.setStyle(Paint.Style.FILL);
+        mMonthNumPaint.setTextAlign(Paint.Align.CENTER);
         mMonthNumPaint.setFakeBoldText(false);
     }
 
@@ -529,7 +512,7 @@ public abstract class MonthView extends View {
      * @param stopY  The bottom boundary of the day number rect
      */
     public abstract void drawMonthDay(Canvas canvas, int year, int month, int day,
-            int x, int y, int startX, int stopX, int startY, int stopY);
+                                      int x, int y, int startX, int stopX, int startY, int stopY);
 
     protected int findDayOffset() {
         return (mDayOfWeekStart < mWeekStart ? (mDayOfWeekStart + mNumDays) : mDayOfWeekStart)
@@ -575,7 +558,7 @@ public abstract class MonthView extends View {
 
     /**
      * Called when the user clicks on a day. Handles callbacks to the
-     * {@link OnDayClickListener} if one is set.
+     * {@link MonthView.OnDayClickListener} if one is set.
      * <p/>
      * If the day is out of the range set by minDate and/or maxDate, this is a no-op.
      *
@@ -589,7 +572,7 @@ public abstract class MonthView extends View {
 
 
         if (mOnDayClickListener != null) {
-            mOnDayClickListener.onDayClick(this, new CalendarDay(mYear, mMonth, day));
+            mOnDayClickListener.onDayClick(this, new SupportMonthAdapter.CalendarDay(mYear, mMonth, day));
         }
 
         // This is a no-op if accessibility is turned off.
@@ -656,10 +639,10 @@ public abstract class MonthView extends View {
      * @return The date that has accessibility focus, or {@code null} if no date
      *         has focus
      */
-    public CalendarDay getAccessibilityFocus() {
+    public MonthAdapter.CalendarDay getAccessibilityFocus() {
         final int day = mTouchHelper.getFocusedVirtualView();
         if (day >= 0) {
-            return new CalendarDay(mYear, mMonth, day);
+            return new MonthAdapter.CalendarDay(mYear, mMonth, day);
         }
         return null;
     }
@@ -679,7 +662,7 @@ public abstract class MonthView extends View {
      * @return {@code false} if the date is not valid for this month view, or
      *         {@code true} if the date received focus
      */
-    public boolean restoreAccessibilityFocus(CalendarDay day) {
+    public boolean restoreAccessibilityFocus(SupportMonthAdapter.CalendarDay day) {
         if ((day.year != mYear) || (day.month != mMonth) || (day.day > mNumCells)) {
             return false;
         }
@@ -702,14 +685,14 @@ public abstract class MonthView extends View {
         }
 
         public void setFocusedVirtualView(int virtualViewId) {
-            getAccessibilityNodeProvider(MonthView.this).performAction(
+            getAccessibilityNodeProvider(SupportMonthView.this).performAction(
                     virtualViewId, AccessibilityNodeInfoCompat.ACTION_ACCESSIBILITY_FOCUS, null);
         }
 
         public void clearFocusedVirtualView() {
             final int focusedVirtualView = getFocusedVirtualView();
             if (focusedVirtualView != ExploreByTouchHelper.INVALID_ID) {
-                getAccessibilityNodeProvider(MonthView.this).performAction(
+                getAccessibilityNodeProvider(SupportMonthView.this).performAction(
                         focusedVirtualView,
                         AccessibilityNodeInfoCompat.ACTION_CLEAR_ACCESSIBILITY_FOCUS,
                         null);
@@ -739,7 +722,7 @@ public abstract class MonthView extends View {
 
         @Override
         protected void onPopulateNodeForVirtualView(int virtualViewId,
-                AccessibilityNodeInfoCompat node) {
+                                                    AccessibilityNodeInfoCompat node) {
             getItemBounds(virtualViewId, mTempRect);
 
             node.setContentDescription(getItemDescription(virtualViewId));
@@ -754,7 +737,7 @@ public abstract class MonthView extends View {
 
         @Override
         protected boolean onPerformActionForVirtualView(int virtualViewId, int action,
-                Bundle arguments) {
+                                                        Bundle arguments) {
             switch (action) {
                 case AccessibilityNodeInfo.ACTION_CLICK:
                     onDayClick(virtualViewId);
@@ -809,6 +792,7 @@ public abstract class MonthView extends View {
      * Handles callbacks when the user clicks on a time object.
      */
     public interface OnDayClickListener {
-        void onDayClick(MonthView view, CalendarDay day);
+        void onDayClick(SupportMonthView view, SupportMonthAdapter.CalendarDay day);
     }
 }
+
