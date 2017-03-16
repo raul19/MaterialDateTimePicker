@@ -302,6 +302,7 @@ public class SupportDatePickerDialog extends DialogFragment implements
             mOkResid = savedInstanceState.getInt(KEY_OK_RESID);
             mOkString = savedInstanceState.getString(KEY_OK_STRING);
             mOkColor = savedInstanceState.getInt(KEY_OK_COLOR);
+            
             mCancelResid = savedInstanceState.getInt(KEY_CANCEL_RESID);
             mCancelString = savedInstanceState.getString(KEY_CANCEL_STRING);
             mCancelColor = savedInstanceState.getInt(KEY_CANCEL_COLOR);
