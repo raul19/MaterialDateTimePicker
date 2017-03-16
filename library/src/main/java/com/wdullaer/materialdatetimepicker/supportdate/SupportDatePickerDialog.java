@@ -415,6 +415,7 @@ public class SupportDatePickerDialog extends DialogFragment implements
         mSelectedMonthTextView.setTypeface(typeFace);
         mSelectedDayTextView.setTypeface(typeFace);
         mYearView.setTypeface(typeFace);
+        
     }
 
     @Override
