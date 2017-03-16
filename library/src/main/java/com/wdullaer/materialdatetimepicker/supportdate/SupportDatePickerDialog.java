@@ -149,6 +149,8 @@ public class SupportDatePickerDialog extends DialogFragment implements
     private Version mVersion;
     private TimeZone mTimezone;
 
+    private Typeface headerTypeface;
+
     private HapticFeedbackController mHapticFeedbackController;
 
     private boolean mDelayAnimation = true;
@@ -313,6 +315,9 @@ public class SupportDatePickerDialog extends DialogFragment implements
         setToNearestDate(mCalendar);
 
         mDatePickerHeaderView = (TextView) view.findViewById(R.id.mdtp_date_picker_header);
+        if(headerTypeface != null){
+            mDatePickerHeaderView.setTypeface(headerTypeface);
+        }
         mMonthAndDayView = (LinearLayout) view.findViewById(R.id.mdtp_date_picker_month_and_day);
         mMonthAndDayView.setOnClickListener(this);
         mSelectedMonthTextView = (TextView) view.findViewById(R.id.mdtp_date_picker_month);
@@ -411,11 +416,8 @@ public class SupportDatePickerDialog extends DialogFragment implements
     }
 
     public void setTypeFace(Typeface typeFace){
-        mDatePickerHeaderView.setTypeface(typeFace);
-        mSelectedMonthTextView.setTypeface(typeFace);
-        mSelectedDayTextView.setTypeface(typeFace);
-        mYearView.setTypeface(typeFace);
-        
+        headerTypeface = typeFace;
+
     }
 
     @Override
