@@ -553,6 +553,9 @@ public class SupportDatePickerDialog extends DialogFragment implements
 
         if (mVersion == Version.VERSION_2) {
             mSelectedDayTextView.setText(VERSION_2_FORMAT.format(mCalendar.getTime()));
+            if(headerTypeface != null){
+                mDatePickerHeaderView.setTypeface(headerTypeface);
+            }
             if (mTitle != null)
                 mDatePickerHeaderView.setText(mTitle.toUpperCase(Locale.getDefault()));
             else
