@@ -4,9 +4,11 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -406,6 +408,15 @@ public class SupportDatePickerDialog extends DialogFragment implements
 
         mHapticFeedbackController = new HapticFeedbackController(activity);
         return view;
+    }
+
+    public void setTypeFace(AssetManager assets, String fontName){
+        final Typeface fontList = Typeface.createFromAsset(assets, fontName);
+        mDatePickerHeaderView.setTypeface(fontList);
+        //mMonthAndDayView.setTyp;
+        mSelectedMonthTextView.setTypeface(fontList);
+        mSelectedDayTextView.setTypeface(fontList);
+        mYearView.setTypeface(fontList);
     }
 
     @Override

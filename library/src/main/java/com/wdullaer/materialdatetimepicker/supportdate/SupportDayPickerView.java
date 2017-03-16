@@ -108,6 +108,8 @@ public abstract class SupportDayPickerView extends ListView implements AbsListVi
         setUpListView();
     }
 
+
+
     public void onChange() {
         refreshAdapter();
     }
