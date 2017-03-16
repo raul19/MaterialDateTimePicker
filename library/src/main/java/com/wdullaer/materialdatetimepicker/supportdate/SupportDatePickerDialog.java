@@ -315,9 +315,6 @@ public class SupportDatePickerDialog extends DialogFragment implements
         setToNearestDate(mCalendar);
 
         mDatePickerHeaderView = (TextView) view.findViewById(R.id.mdtp_date_picker_header);
-        if(headerTypeface != null){
-            mDatePickerHeaderView.setTypeface(headerTypeface);
-        }
         mMonthAndDayView = (LinearLayout) view.findViewById(R.id.mdtp_date_picker_month_and_day);
         mMonthAndDayView.setOnClickListener(this);
         mSelectedMonthTextView = (TextView) view.findViewById(R.id.mdtp_date_picker_month);
@@ -387,7 +384,12 @@ public class SupportDatePickerDialog extends DialogFragment implements
         if (mAccentColor == -1) {
             mAccentColor = Utils.getAccentColorFromThemeIfAvailable(getActivity());
         }
-        if(mDatePickerHeaderView != null) mDatePickerHeaderView.setBackgroundColor(Utils.darkenColor(mAccentColor));
+        if(mDatePickerHeaderView != null) {
+            mDatePickerHeaderView.setBackgroundColor(Utils.darkenColor(mAccentColor));
+            if(headerTypeface != null){
+                mDatePickerHeaderView.setTypeface(headerTypeface);
+            }
+        }
         view.findViewById(R.id.mdtp_day_picker_selected_date_layout).setBackgroundColor(mAccentColor);
 
         // Buttons can have a different color
@@ -535,6 +537,9 @@ public class SupportDatePickerDialog extends DialogFragment implements
 
         if (mVersion == Version.VERSION_1) {
             if (mDatePickerHeaderView != null) {
+                if(headerTypeface != null){
+                    mDatePickerHeaderView.setTypeface(headerTypeface);
+                }
                 if (mTitle != null)
                     mDatePickerHeaderView.setText(mTitle.toUpperCase(Locale.getDefault()));
                 else {
