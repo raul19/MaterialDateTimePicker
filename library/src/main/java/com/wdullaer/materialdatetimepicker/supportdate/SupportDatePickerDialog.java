@@ -410,13 +410,12 @@ public class SupportDatePickerDialog extends DialogFragment implements
         return view;
     }
 
-    public void setTypeFace(AssetManager assets, String fontName){
-        final Typeface fontList = Typeface.createFromAsset(assets, fontName);
-        mDatePickerHeaderView.setTypeface(fontList);
+    public void setTypeFace(Typeface typeFace){
+        mDatePickerHeaderView.setTypeface(typeFace);
         //mMonthAndDayView.setTyp;
-        mSelectedMonthTextView.setTypeface(fontList);
-        mSelectedDayTextView.setTypeface(fontList);
-        mYearView.setTypeface(fontList);
+        mSelectedMonthTextView.setTypeface(typeFace);
+        mSelectedDayTextView.setTypeface(typeFace);
+        mYearView.setTypeface(typeFace);
     }
 
     @Override
