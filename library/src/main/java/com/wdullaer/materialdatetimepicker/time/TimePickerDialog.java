@@ -28,6 +28,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -135,6 +136,7 @@ public class TimePickerDialog extends DialogFragment implements
     private boolean mThemeDarkChanged;
     private boolean mVibrate;
     private int mAccentColor = -1;
+    private int mHeaderColor = -1;
     private boolean mDismissOnPause;
     private Timepoint[] mSelectableTimes;
     private Timepoint mMinTime;
@@ -246,6 +248,10 @@ public class TimePickerDialog extends DialogFragment implements
     @SuppressWarnings("unused")
     public void setAccentColor(String color) {
         mAccentColor = Color.parseColor(color);
+    }
+
+    public void setHeaderColor(@ColorInt int color) {
+        mHeaderColor = Color.argb(255, Color.red(color), Color.green(color), Color.blue(color));
     }
 
     /**
@@ -860,7 +866,7 @@ public class TimePickerDialog extends DialogFragment implements
         }
 
         // Set the theme at the end so that the initialize()s above don't counteract the theme.
-        timePickerHeader.setBackgroundColor(Utils.darkenColor(mAccentColor));
+        timePickerHeader.setBackgroundColor(Utils.darkenColor(mHeaderColor));
         view.findViewById(R.id.mdtp_time_display_background).setBackgroundColor(mAccentColor);
         view.findViewById(R.id.mdtp_time_display).setBackgroundColor(mAccentColor);
 

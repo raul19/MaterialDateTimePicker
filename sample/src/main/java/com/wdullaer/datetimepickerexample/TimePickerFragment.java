@@ -79,6 +79,7 @@ public class TimePickerFragment extends Fragment implements TimePickerDialog.OnT
                 if (limitSelectableTimes.isChecked()) {
                     tpd.setTimeInterval(3, 5, 10);
                 }
+                tpd.setHeaderColor(getResources().getColor(android.R.color.black));
                 tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
