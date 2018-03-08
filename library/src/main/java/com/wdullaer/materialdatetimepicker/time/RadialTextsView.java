@@ -98,9 +98,11 @@ public class RadialTextsView extends View {
         int textColorRes = controller.isThemeDark() ? R.color.mdtp_white : R.color.mdtp_numbers_text_color;
         mPaint.setColor(ContextCompat.getColor(context, textColorRes));
         String typefaceFamily = res.getString(R.string.mdtp_radial_numbers_typeface);
-        mTypefaceLight = Typeface.create(typefaceFamily, Typeface.NORMAL);
-        String typefaceFamilyRegular = res.getString(R.string.mdtp_sans_serif);
-        mTypefaceRegular = Typeface.create(typefaceFamilyRegular, Typeface.NORMAL);
+        if (mTypefaceRegular == null) {
+            mTypefaceLight = Typeface.create(typefaceFamily, Typeface.NORMAL);
+            String typefaceFamilyRegular = res.getString(R.string.mdtp_sans_serif);
+            mTypefaceRegular = Typeface.create(typefaceFamilyRegular, Typeface.NORMAL);
+        }
         mPaint.setAntiAlias(true);
         mPaint.setTextAlign(Align.CENTER);
 
@@ -139,12 +141,21 @@ public class RadialTextsView extends View {
         if (mHasInnerCircle) {
             mNumbersRadiusMultiplier = Float.parseFloat(
                     res.getString(R.string.mdtp_numbers_radius_multiplier_outer));
-            mTextSizeMultiplier = Float.parseFloat(
-                    res.getString(R.string.mdtp_text_size_multiplier_outer));
             mInnerNumbersRadiusMultiplier = Float.parseFloat(
                     res.getString(R.string.mdtp_numbers_radius_multiplier_inner));
-            mInnerTextSizeMultiplier = Float.parseFloat(
-                    res.getString(R.string.mdtp_text_size_multiplier_inner));
+
+            // Version 2 layout draws outer circle bigger than inner
+            if (controller.getVersion() == TimePickerDialog.Version.VERSION_1) {
+                mTextSizeMultiplier = Float.parseFloat(
+                        res.getString(R.string.mdtp_text_size_multiplier_outer));
+                mInnerTextSizeMultiplier = Float.parseFloat(
+                        res.getString(R.string.mdtp_text_size_multiplier_inner));
+            } else {
+                mTextSizeMultiplier = Float.parseFloat(
+                        res.getString(R.string.mdtp_text_size_multiplier_outer_v2));
+                mInnerTextSizeMultiplier = Float.parseFloat(
+                        res.getString(R.string.mdtp_text_size_multiplier_inner_v2));
+            }
 
             mInnerTextGridHeights = new float[7];
             mInnerTextGridWidths = new float[7];
@@ -164,6 +175,11 @@ public class RadialTextsView extends View {
 
         mTextGridValuesDirty = true;
         mIsInitialized = true;
+    }
+
+    public void setCustomFont(Typeface typeface) {
+        mTypefaceLight = typeface;
+        mTypefaceRegular = typeface;
     }
 
     /**

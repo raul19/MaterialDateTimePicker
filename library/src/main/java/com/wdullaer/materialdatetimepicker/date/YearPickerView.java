@@ -52,7 +52,9 @@ public class YearPickerView extends ListView implements OnItemClickListener, OnD
                 LayoutParams.WRAP_CONTENT);
         setLayoutParams(frame);
         Resources res = context.getResources();
-        mViewSize = res.getDimensionPixelOffset(R.dimen.mdtp_date_picker_view_animator_height);
+        mViewSize = mController.getVersion() == DatePickerDialog.Version.VERSION_1
+            ? res.getDimensionPixelOffset(R.dimen.mdtp_date_picker_view_animator_height)
+            : res.getDimensionPixelOffset(R.dimen.mdtp_date_picker_view_animator_height_v2);
         mChildSize = res.getDimensionPixelOffset(R.dimen.mdtp_year_label_height);
         setVerticalFadingEdgeEnabled(true);
         setFadingEdgeLength(mChildSize / 3);
@@ -130,7 +132,7 @@ public class YearPickerView extends ListView implements OnItemClickListener, OnD
             }
             int year = mMinYear + position;
             boolean selected = mController.getSelectedDay().year == year;
-            v.setText(String.valueOf(year));
+            v.setText(String.format(mController.getLocale(),"%d", year));
             v.drawIndicator(selected);
             v.requestLayout();
             if (selected) {

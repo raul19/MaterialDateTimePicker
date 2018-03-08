@@ -17,6 +17,7 @@
 package com.wdullaer.materialdatetimepicker.date;
 
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -30,6 +31,7 @@ public interface DatePickerController {
 
     void registerOnDateChangedListener(DatePickerDialog.OnDateChangedListener listener);
 
+    @SuppressWarnings("unused")
     void unregisterOnDateChangedListener(DatePickerDialog.OnDateChangedListener listener);
 
     MonthAdapter.CalendarDay getSelectedDay();
@@ -55,4 +57,10 @@ public interface DatePickerController {
     void tryVibrate();
 
     TimeZone getTimeZone();
+
+    Locale getLocale();
+
+    DatePickerDialog.Version getVersion();
+
+    DatePickerDialog.ScrollOrientation getScrollOrientation();
 }
